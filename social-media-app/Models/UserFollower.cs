@@ -8,12 +8,12 @@ namespace social_media_app.Models
     public class UserFollower
     {
         [ForeignKey("User")]
-        public int UserID { get; set; }
+        public string UserID { get; set; }
 
         public User User { get; set; }
 
         [ForeignKey("Follower")]
-        public int FollowerID { get; set; }
+        public string FollowerID { get; set; }
 
         public User Follower { get; set; }
 
