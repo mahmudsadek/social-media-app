@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using social_media_app.Models;
+
 namespace social_media_app
 {
     public class Program
@@ -13,6 +16,11 @@ namespace social_media_app
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<Context>(options =>
+            {
+                options.UseSqlServer("Data Source=.;Initial Catalog=Social_Media_Api;trustservercertificate = true;Integrated Security=True;Encrypt=False");
+            });
 
             var app = builder.Build();
 
