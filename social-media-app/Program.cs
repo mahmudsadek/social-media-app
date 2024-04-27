@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using social_media_app.DBContext;
 using social_media_app.Models;
 
 namespace social_media_app
