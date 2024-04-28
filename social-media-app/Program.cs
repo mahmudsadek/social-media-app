@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using social_media_app.DBContext;
 using social_media_app.Models;
+using social_media_app.Repository;
 
 namespace social_media_app
 {
@@ -22,6 +23,8 @@ namespace social_media_app
             {
                 options.UseSqlServer("Data Source=.;Initial Catalog=Social_Media_Api;trustservercertificate = true;Integrated Security=True;Encrypt=False");
             });
+
+            builder.Services.AddScoped<IReactRepository, ReactRepository>();
 
             var app = builder.Build();
 
