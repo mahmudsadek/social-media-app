@@ -8,19 +8,19 @@ namespace social_media_app.Models
         [Required]
         [MaxLength(20, ErrorMessage = "Name Must Be Less Than 20 Char")]
         [MinLength(3, ErrorMessage = "Name Must Be More That 3 Char")]
-        public string Name { get; set; }
-        
-        public string ProfileImage {  get; set; }
-        
-        public string CoverImage { get; set; }
+        public string Name { get; set; } = "sa";
+
+        public string? ProfileImage { get; set; } = "dss";
+
+        public string? CoverImage { get; set; } = "dssd";
 
         [MaxLength(70, ErrorMessage = "Bio Must Be Less Than 70 Char")]
         [MinLength(10, ErrorMessage = "Name Must Be More That 10 Char")]
-        public string? Bio {  get; set; }
+        public string? Bio { get; set; } = "";
 
-        public string Location { get; set; }
+        public string? Location { get; set; } = "";
 
-        public DateTime JoinDate { get; set; }
+        public DateTime JoinDate { get; set; } = DateTime.Now;
 
         public IList<Post>? Posts { get; set; }
 
