@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using social_media_app.DBContext;
 
@@ -11,9 +12,11 @@ using social_media_app.DBContext;
 namespace social_media_app.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240428133210_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,28 +240,6 @@ namespace social_media_app.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Post");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CommentCount = 0,
-                            Content = "First post",
-                            LoveCount = 0,
-                            PostTime = new DateTime(2024, 4, 28, 13, 8, 54, 505, DateTimeKind.Local).AddTicks(6554),
-                            ShareCount = 0,
-                            UserId = "user1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CommentCount = 0,
-                            Content = "Second post",
-                            LoveCount = 0,
-                            PostTime = new DateTime(2024, 4, 28, 13, 8, 54, 505, DateTimeKind.Local).AddTicks(6595),
-                            ShareCount = 0,
-                            UserId = "user2"
-                        });
                 });
 
             modelBuilder.Entity("social_media_app.Models.React", b =>

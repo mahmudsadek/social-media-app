@@ -1,7 +1,12 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using social_media_app.DBContext;
 using social_media_app.Models;
+using System.Text;
 
 namespace social_media_app
 {
@@ -23,6 +28,13 @@ namespace social_media_app
                 options.UseSqlServer("Data Source=.;Initial Catalog=Social_Media_Api;trustservercertificate = true;Integrated Security=True;Encrypt=False");
             });
 
+            builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Context>();
+
+            builder.Services.AddCors(options => options.AddPolicy("MyPolicy", policy => 
+            policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()));
+
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -32,8 +44,11 @@ namespace social_media_app
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("MyPolicy");
+
             app.UseAuthorization();
 
+            
 
             app.MapControllers();
 
