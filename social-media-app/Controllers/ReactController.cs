@@ -30,7 +30,7 @@ namespace social_media_app.Controllers
 
         //GET ALL Reacts
 
-        [Route("all")]
+        [HttpGet("all")]
         public IActionResult GetAll(int id)
         {
             return Ok(reactRepository.GetAll());
@@ -49,14 +49,49 @@ namespace social_media_app.Controllers
                 react.UserId = ReactDto.UserId;
 
                 reactRepository.Insert(react);
+                reactRepository.Save();
 
                 return CreatedAtAction("GetById", new { id = react.Id }, react);
             }
 
             return BadRequest(ModelState);
-
         }
 
+        [HttpPut]
+        public IActionResult ChangeReact(int id, ReactWithoutPostAndUserObj ChangeReact)
+        {
+            React react = reactRepository.Get(id);
+            if (react != null)
+            {
+                if (react.Id == ChangeReact.Id)
+                {
+                    react.Value = ChangeReact.Value;
+
+                    reactRepository.Update(react);
+                    reactRepository.Save();
+
+                    return NoContent();
+                }
+            }
+            return BadRequest("Invalid ID");
+        }
+
+        [HttpDelete]
+        public IActionResult RemoveReact(int id)
+        {
+            try
+            {
+                reactRepository.Delete(reactRepository.Get(id));
+                reactRepository.Save();
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 
     
