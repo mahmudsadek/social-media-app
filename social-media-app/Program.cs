@@ -1,8 +1,14 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using social_media_app.DBContext;
 using social_media_app.Models;
 using social_media_app.Repository;
+
+using System.Text;
 
 namespace social_media_app
 {
@@ -25,6 +31,14 @@ namespace social_media_app
             });
 
             builder.Services.AddScoped<IReactRepository, ReactRepository>();
+            builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Context>();
+
+            builder.Services.AddCors(options => options.AddPolicy("MyPolicy", policy => 
+            policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()));
+
+
+            builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+            builder.Services.AddScoped<IPostRepository, PostRepository>();
 
             var app = builder.Build();
 
@@ -35,8 +49,11 @@ namespace social_media_app
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("MyPolicy");
+
             app.UseAuthorization();
 
+            
 
             app.MapControllers();
 

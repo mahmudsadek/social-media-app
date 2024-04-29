@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace social_media_app.Models
 {
     public class Comment
     {
+        [Key]
         public int Id { get; set; }
         public string Content { get; set; }
 
