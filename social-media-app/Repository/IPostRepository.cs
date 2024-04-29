@@ -12,7 +12,7 @@ namespace social_media_app.Repository
         //void Delete(int id);
         //void Save();
 
-
+        void DeleteWithRelatedEntities(Post post);
 
     }
 }

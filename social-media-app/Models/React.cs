@@ -12,7 +12,7 @@ namespace social_media_app.Models
     public class React
     {
         public int Id { get; set; }
-        public React_Value Value { get; set; }
+        public bool Value { get; set; }
 
         [ForeignKey("User")]
         public string UserId {  get; set; }

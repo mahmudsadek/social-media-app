@@ -31,7 +31,7 @@ namespace social_media_app.Controllers
         //GET ALL Reacts
 
         [HttpGet("all")]
-        public IActionResult GetAll(int id)
+        public IActionResult GetAll()
         {
             return Ok(reactRepository.GetAll());
         }

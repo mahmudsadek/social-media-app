@@ -79,5 +79,27 @@ namespace social_media_app.Repository
         {
         }
 
+        public void DeleteWithRelatedEntities(Post post)
+        {
+    
+            var postToDelete = Context.Post
+                .Include(p => p.Comments)
+                .Include(p => p.Reactions)
+                .FirstOrDefault(p => p.Id == post.Id);
+
+            if (postToDelete != null)
+            {
+                
+                Context.Comment.RemoveRange(postToDelete.Comments);
+
+               
+                Context.React.RemoveRange(postToDelete.Reactions);
+
+                Context.Post.Remove(postToDelete);
+            }
+
+           
+            Context.SaveChanges();
+        }
     }
 }
