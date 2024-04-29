@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using social_media_app.Repository;
 using social_media_app.Models;
+using social_media_app.DTOs;
 
 
 
@@ -12,8 +13,8 @@ namespace social_media_app.Controllers
     public class CommentController : ControllerBase
     {
 
-        private IRepository<Comment> _repository;
-        public CommentController(IRepository<Comment> repository)
+        private ICommentRepository _repository;
+        public CommentController(ICommentRepository repository)
         {
             _repository = repository;
         }
@@ -32,7 +33,7 @@ namespace social_media_app.Controllers
             return Ok(comment);
         }
         [HttpPut]
-        public IActionResult Edit(int id, Comment comment)
+        public IActionResult Edit(int id, CommentDTO comment)
         {
             Comment commentDB = _repository.Get(id);
             if (commentDB == null)
@@ -40,11 +41,9 @@ namespace social_media_app.Controllers
                 return BadRequest();
             }
             commentDB.Content= comment.Content;
-            commentDB.CommentTime= comment.CommentTime;
+            commentDB.CommentTime= (DateTime)comment.CommentTime;
             commentDB.PostId= comment.PostId;
-            commentDB.Id= comment.Id;
             commentDB.UserId= comment.UserId;
-            commentDB.Replays= comment.Replays;
             _repository.Save();
             return NoContent();
         }
@@ -66,10 +65,17 @@ namespace social_media_app.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Comment comment)
+        public IActionResult Add(CommentDTO commentDTO)
         {
             if (ModelState.IsValid == true)
             {
+                Comment comment = new();
+
+                comment.Content= commentDTO.Content;
+                comment.CommentTime= (DateTime) commentDTO.CommentTime;
+                comment.PostId= commentDTO.PostId;
+                comment.UserId= commentDTO.UserId;
+
                 _repository.Insert(comment);
                 _repository.Save();
                 return CreatedAtAction("Get", new { id = comment.Id }, comment);
