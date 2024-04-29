@@ -21,17 +21,24 @@ namespace social_media_app.Repository
             Context.Remove(item);
         }
 
-        public List<T> GetAll(string[] includes = null) 
+        public List<T> GetAll(string[]? includes = null) 
         {
-
-            switch (includes.Length)
+            if (includes == null)
             {
-                case 1: return Context.Set<T>().Include(includes[0]).ToList();
-                case 2: return Context.Set<T>().Include(includes[0]).Include(includes[1]).ToList();
-                case 3: return Context.Set<T>().Include(includes[0]).Include(includes[1]).Include(includes[2]).ToList();
-                case 4: return Context.Set<T>().Include(includes[0]).Include(includes[1]).Include(includes[2]).Include(includes[3]).ToList();
-                default: return Context.Set<T>().ToList();
+                return Context.Set<T>().ToList();
             }
+            else
+            {
+                switch (includes.Length)
+                {
+                    case 1: return Context.Set<T>().Include(includes[0]).ToList();
+                    case 2: return Context.Set<T>().Include(includes[0]).Include(includes[1]).ToList();
+                    case 3: return Context.Set<T>().Include(includes[0]).Include(includes[1]).Include(includes[2]).ToList();
+                    case 4: return Context.Set<T>().Include(includes[0]).Include(includes[1]).Include(includes[2]).Include(includes[3]).ToList();
+                    default: return Context.Set<T>().ToList();
+                }
+            }
+            
             //if (include == null)  // from default or passed from a calling function
             //{ 
             //    return Context.Set<T>().ToList();

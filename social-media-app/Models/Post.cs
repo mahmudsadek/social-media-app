@@ -16,11 +16,11 @@ namespace social_media_app.Models
 
         public User User { get; set; }
 
-        public int LoveCount { get; set; }
+        public int LoveCount { get; set; } = 0;
 
-        public int CommentCount { get; set; }
+        public int CommentCount { get; set; } = 0;
 
-        public int ShareCount { get; set; }
+        public int ShareCount { get; set; } = 0;
         
         public IList<React>? Reactions { get; set; }
         
