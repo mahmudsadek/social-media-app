@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using social_media_app.DBContext;
 using social_media_app.Models;
 using social_media_app.Repository;
+
 using System.Text;
 
 namespace social_media_app
@@ -29,6 +30,7 @@ namespace social_media_app
                 options.UseSqlServer("Data Source=.;Initial Catalog=Social_Media_Api;trustservercertificate = true;Integrated Security=True;Encrypt=False");
             });
 
+            builder.Services.AddScoped<IReactRepository, ReactRepository>();
             builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Context>();
 
             builder.Services.AddCors(options => options.AddPolicy("MyPolicy", policy => 
@@ -37,7 +39,6 @@ namespace social_media_app
 
             builder.Services.AddScoped<ICommentRepository, CommentRepository>();
             builder.Services.AddScoped<IPostRepository, PostRepository>();
-
 
             var app = builder.Build();
 

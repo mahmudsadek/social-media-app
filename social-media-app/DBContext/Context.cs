@@ -6,15 +6,15 @@ namespace social_media_app.DBContext
 {
     public class Context: IdentityDbContext<User>
     {
-        public DbSet<User> User { get; set; }
+        public DbSet<User> Users { get; set; }
         
-        public DbSet<Post> Post { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
-        public DbSet<Comment> Comment { get; set; } 
+        public DbSet<Comment> Comments { get; set; } 
 
-        public DbSet<React> React { get; set; }
+        public DbSet<React> Reacts { get; set; }
 
-        public DbSet<Replay> Replay { get; set; }
+        public DbSet<Replay> Replays { get; set; }
         
         public Context(DbContextOptions dbContextOptions) : base(dbContextOptions) { }
 

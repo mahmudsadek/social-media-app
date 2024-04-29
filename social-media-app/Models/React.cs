@@ -2,10 +2,17 @@
 
 namespace social_media_app.Models
 {
+    public enum React_Value
+    {
+        Like,
+        Dislike
+    };
+
+    // Refaey : I have changed the bool with enum to make it readable and to let us easy add others reaction if we want
     public class React
     {
         public int Id { get; set; }
-        public bool Value {  get; set; }
+        public React_Value Value { get; set; }
 
         [ForeignKey("User")]
         public string UserId {  get; set; }
