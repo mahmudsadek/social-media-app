@@ -39,6 +39,10 @@ namespace social_media_app
 
             builder.Services.AddScoped<ICommentRepository, CommentRepository>();
             builder.Services.AddScoped<IPostRepository, PostRepository>();
+           
+            builder.Services.AddScoped<IReactRepository, ReactRepository>();
+
+
 
             var app = builder.Build();
 

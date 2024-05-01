@@ -13,10 +13,21 @@ namespace social_media_app.Controllers
     {
         private readonly IPostRepository _postRepository;
 
-        public PostsController(IPostRepository postRepository)
+        private readonly ICommentRepository _commentRepository;
+        private readonly IReactRepository _reactRepository;
+
+        public PostsController(IPostRepository postRepository, ICommentRepository commentRepository, IReactRepository reactRepository)
         {
             _postRepository = postRepository;
+            _commentRepository = commentRepository;
+            _reactRepository = reactRepository;
         }
+
+
+        //public PostsController(IPostRepository postRepository)
+        //{
+        //    _postRepository = postRepository;
+        //}
 
         // GET: api/posts
         [HttpGet]
@@ -95,20 +106,40 @@ namespace social_media_app.Controllers
             return NoContent();
         }
 
+        //// DELETE: api/posts/5
+        //[HttpDelete("{id}")]
+        //public IActionResult DeletePost(int id)
+        //{
+        //    var post = _postRepository.Get(id);
+
+        //    if (post == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _postRepository.Delete(post);
+        //    _postRepository.Save();
+        //    return NoContent();
+        //}
+
+
         // DELETE: api/posts/5
         [HttpDelete("{id}")]
-        public IActionResult DeletePost(int id)
+        public IActionResult Delete(int id)
         {
-            var post = _postRepository.Get(id);
+         
+            var postToDelete = _postRepository.Get(id);
 
-            if (post == null)
+            if (postToDelete == null)
             {
                 return NotFound();
             }
 
-            _postRepository.Delete(post);
-            _postRepository.Save();
+          
+            _postRepository.DeleteWithRelatedEntities(postToDelete);
+
             return NoContent();
         }
+
     }
 }
