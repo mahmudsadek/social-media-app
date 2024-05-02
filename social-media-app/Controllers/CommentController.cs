@@ -19,10 +19,10 @@ namespace social_media_app.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpGet("post/{id:int}")]
+        public IActionResult GetAllByPostId(int id)
         {
-            List<Comment> comments = _repository.GetAll();
+            List<Comment> comments = _repository.Get(e=>e.PostId ==id);
             return Ok(comments);
         }
 
@@ -32,6 +32,15 @@ namespace social_media_app.Controllers
             Comment comment = _repository.Get(id);
             return Ok(comment);
         }
+
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<Comment> comments = _repository.GetAll();
+            return Ok(comments);
+        }
+
+        
         [HttpPut]
         public IActionResult Edit(int id, CommentDTO comment)
         {
