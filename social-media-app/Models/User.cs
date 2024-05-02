@@ -8,7 +8,7 @@ namespace social_media_app.Models
         [Required]
         [MaxLength(20, ErrorMessage = "Name Must Be Less Than 20 Char")]
         [MinLength(3, ErrorMessage = "Name Must Be More That 3 Char")]
-        public string Name { get; set; } = "sa";
+        public string? Name { get; set; } = "sa";
 
         public string? ProfileImage { get; set; } = "dss";
 

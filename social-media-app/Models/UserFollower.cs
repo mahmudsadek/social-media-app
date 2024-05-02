@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace social_media_app.Models
 {
 
-    [PrimaryKey(nameof(UserID), nameof(FollowerID))]
     public class UserFollower
     {
+        public int Id { get; set; }
         [ForeignKey("User")]
         public string UserID { get; set; }
 
