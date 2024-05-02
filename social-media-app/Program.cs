@@ -41,6 +41,7 @@ namespace social_media_app
             builder.Services.AddScoped<IPostRepository, PostRepository>();
             builder.Services.AddScoped<IReplayRepository, ReplayRepository>();
 
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
