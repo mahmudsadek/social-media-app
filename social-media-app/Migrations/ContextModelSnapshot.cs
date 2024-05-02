@@ -237,28 +237,6 @@ namespace social_media_app.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Post");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CommentCount = 0,
-                            Content = "First post",
-                            LoveCount = 0,
-                            PostTime = new DateTime(2024, 4, 28, 13, 8, 54, 505, DateTimeKind.Local).AddTicks(6554),
-                            ShareCount = 0,
-                            UserId = "user1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CommentCount = 0,
-                            Content = "Second post",
-                            LoveCount = 0,
-                            PostTime = new DateTime(2024, 4, 28, 13, 8, 54, 505, DateTimeKind.Local).AddTicks(6595),
-                            ShareCount = 0,
-                            UserId = "user2"
-                        });
                 });
 
             modelBuilder.Entity("social_media_app.Models.React", b =>
@@ -341,7 +319,6 @@ namespace social_media_app.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CoverImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -355,7 +332,6 @@ namespace social_media_app.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Location")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -387,7 +363,6 @@ namespace social_media_app.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfileImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -413,12 +388,40 @@ namespace social_media_app.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("social_media_app.Models.UserFollower", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FollowerID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowerID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserFollower");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -427,7 +430,7 @@ namespace social_media_app.Migrations
                     b.HasOne("social_media_app.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -436,7 +439,7 @@ namespace social_media_app.Migrations
                     b.HasOne("social_media_app.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -445,13 +448,13 @@ namespace social_media_app.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("social_media_app.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -460,7 +463,7 @@ namespace social_media_app.Migrations
                     b.HasOne("social_media_app.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -469,13 +472,13 @@ namespace social_media_app.Migrations
                     b.HasOne("social_media_app.Models.User", null)
                         .WithMany()
                         .HasForeignKey("FollowersId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("social_media_app.Models.User", null)
                         .WithMany()
                         .HasForeignKey("PeopleIFollowId")
-                        .OnDelete(DeleteBehavior.ClientNoAction)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
                 });
 
@@ -484,13 +487,13 @@ namespace social_media_app.Migrations
                     b.HasOne("social_media_app.Models.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("social_media_app.Models.User", "User")
                         .WithMany("Commnets")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Post");
@@ -503,7 +506,7 @@ namespace social_media_app.Migrations
                     b.HasOne("social_media_app.Models.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -514,13 +517,13 @@ namespace social_media_app.Migrations
                     b.HasOne("social_media_app.Models.Post", "Post")
                         .WithMany("Reactions")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("social_media_app.Models.User", "User")
                         .WithMany("Reacts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Post");
@@ -533,24 +536,43 @@ namespace social_media_app.Migrations
                     b.HasOne("social_media_app.Models.Comment", "Comment")
                         .WithMany("Replays")
                         .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("social_media_app.Models.Post", "Post")
                         .WithMany()
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("social_media_app.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Comment");
 
                     b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("social_media_app.Models.UserFollower", b =>
+                {
+                    b.HasOne("social_media_app.Models.User", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("social_media_app.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
 
                     b.Navigation("User");
                 });

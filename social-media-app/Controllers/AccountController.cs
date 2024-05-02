@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using social_media_app.DTOs;
 using social_media_app.Models;
+using social_media_app.Repository;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+//using System.Web.Http;
 
 namespace social_media_app.Controllers
 {
@@ -16,11 +18,13 @@ namespace social_media_app.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager<User> userManager;
+        private readonly IUserFollowerRepository userFollowerRepository;
         private readonly IConfiguration configuration;
 
-        public AccountController(UserManager<User> userManager, IConfiguration configuration)
+        public AccountController(UserManager<User> userManager, IUserFollowerRepository userFollowerRepository ,IConfiguration configuration)
         {
             this.userManager = userManager;
+            this.userFollowerRepository = userFollowerRepository;
             this.configuration = configuration;
         }
 
@@ -102,6 +106,51 @@ namespace social_media_app.Controllers
             await userManager.UpdateAsync(UserDB);
             return Ok();
 
+        }
+        [HttpGet("suggestions")]
+        public async Task<ActionResult> GetFollowersSuggestion(string id)
+        {
+            var Users = userManager.Users;
+            List < UserFollower > Followers = userFollowerRepository.GetAll();
+            List<FollowersSuggestionDTO> followersSuggestions = new();
+            foreach (var user in Users)
+            {
+                bool followed = false;
+                foreach (var follower in Followers)
+                {
+                    if (user.Id == follower.UserID && id == follower.FollowerID)
+                        followed = true;
+                }
+                if(!followed)
+                {
+                    FollowersSuggestionDTO follower = new() 
+                    { 
+                        Id = user.Id, Email = user.Email, UserName = user.UserName, 
+                        UserImage = user.ProfileImage, CoverImage = user.CoverImage 
+                    };
+
+                    followersSuggestions.Add(follower);
+                }
+            }
+
+            return Ok(followersSuggestions);
+        }
+        [HttpGet("follow")]
+        public ActionResult FollowSomeone([FromQuery] string id, string SomeoneIWillFollowId) 
+        {
+            UserFollower userFollower = new() { UserID = SomeoneIWillFollowId, FollowerID = id };
+            userFollowerRepository.Insert(userFollower);
+            userFollowerRepository.Save();
+            return NoContent();
+        }
+
+        [HttpGet("unfollow")]
+        public ActionResult UnFollowSomeone([FromQuery] string id, string SomeoneIWillUnFollowId)
+        {
+            UserFollower userFollower = userFollowerRepository.Get(f => f.UserID == SomeoneIWillUnFollowId && f.FollowerID == id).FirstOrDefault();
+            userFollowerRepository.Delete(userFollower);
+            userFollowerRepository.Save();
+            return NoContent();
         }
     }
 }
