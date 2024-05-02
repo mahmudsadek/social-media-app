@@ -15,7 +15,11 @@ namespace social_media_app.DBContext
         public DbSet<React> React { get; set; }
 
         public DbSet<Replay> Replay { get; set; }
-        
+
+
+
+
+
         public Context(DbContextOptions dbContextOptions) : base(dbContextOptions) { }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
