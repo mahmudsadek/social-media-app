@@ -14,7 +14,5 @@ namespace social_media_app.Models
         public DateTime ReceiverMessagesTime { get; set; }
         public string ReceiverMessage { get; set; }
 
-        
-
     }
 }

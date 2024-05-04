@@ -10,6 +10,10 @@ namespace social_media_app.Models
 
         [ForeignKey("User")]
         public int ReceiverId { get; set; }
-        public List<Message> Messages { get; set; }
+
+        [ForeignKey("Message")]
+        public List<int>? MessagesId { get; set; }
+        public List<Message>? Messages { get; set; }
+
     }
 }
