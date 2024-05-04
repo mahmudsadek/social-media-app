@@ -152,5 +152,28 @@ namespace social_media_app.Controllers
             userFollowerRepository.Save();
             return NoContent();
         }
+
+        [HttpGet("userId")]
+        public async Task<ActionResult> GetUserId([FromQuery] string email)
+        {
+            User user = await userManager.FindByEmailAsync(email);
+            if(user != null) 
+            {
+                string UserId = user.Id;
+                return Ok(new
+                {
+                    status=200,
+                    userId=UserId
+                });
+            }
+            else
+            {
+                return NotFound(new
+                {
+                    status = 404,
+                    message = "Invalid Email"
+                });
+            }
+        }
     }
 }
