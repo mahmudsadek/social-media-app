@@ -14,9 +14,11 @@ namespace social_media_app.Controllers
     {
 
         private ICommentRepository _repository;
-        public CommentController(ICommentRepository repository)
+        private INotifyRepository _notifyRepository;
+        public CommentController(ICommentRepository repository ,INotifyRepository notifyRepository)
         {
             _repository = repository;
+            _notifyRepository = notifyRepository;
         }
 
         [HttpGet("post/{id:int}")]
@@ -87,6 +89,17 @@ namespace social_media_app.Controllers
 
                 _repository.Insert(comment);
                 _repository.Save();
+
+                Comment comment2= _repository.GetAll(["User", "Post"]).Find(c=>c.Id==comment.Id);
+
+                {
+                    Notify notify = new Notify();
+                    notify.Content = "There is new comment from "+comment2.User.UserName;
+                    notify.PostedUserId= comment2.UserId;
+                    notify.UserId=  comment2.Post.UserId;
+                    _notifyRepository.Insert(notify);
+                    _notifyRepository.Save();
+                }
                 return CreatedAtAction("Get", new { id = comment.Id }, comment);
 
             }
