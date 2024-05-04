@@ -40,6 +40,7 @@ namespace social_media_app
             builder.Services.AddScoped<ICommentRepository, CommentRepository>();
             builder.Services.AddScoped<IPostRepository, PostRepository>();
             builder.Services.AddScoped<IReplayRepository, ReplayRepository>();
+            builder.Services.AddScoped<INotifyRepository, NotifyRepository>();
             builder.Services.AddScoped<IUserFollowerRepository, UserFollowerRepository>();
 
             builder.Services.AddAuthentication(options =>

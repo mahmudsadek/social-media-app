@@ -12,6 +12,9 @@ namespace social_media_app.DBContext
 
         public DbSet<Comment> Comment { get; set; } 
 
+        public DbSet<Notify> Notify { get; set; } 
+
+
         public DbSet<React> React { get; set; }
 
         public DbSet<Replay> Replay { get; set; }

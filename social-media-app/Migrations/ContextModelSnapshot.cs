@@ -201,6 +201,35 @@ namespace social_media_app.Migrations
                     b.ToTable("Comment");
                 });
 
+            modelBuilder.Entity("social_media_app.Models.Notify", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostedUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostedUserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notify");
+                });
+
             modelBuilder.Entity("social_media_app.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -497,6 +526,25 @@ namespace social_media_app.Migrations
                         .IsRequired();
 
                     b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("social_media_app.Models.Notify", b =>
+                {
+                    b.HasOne("social_media_app.Models.User", "PostedUser")
+                        .WithMany()
+                        .HasForeignKey("PostedUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("social_media_app.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PostedUser");
 
                     b.Navigation("User");
                 });
