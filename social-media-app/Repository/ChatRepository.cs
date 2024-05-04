@@ -3,10 +3,11 @@ using social_media_app.Models;
 
 namespace social_media_app.Repository
 {
-    public class ReactRepository : Repository<React> , IReactRepository
+    public class ChatRepository : Repository<Chat>, IChatRepository
     {
-        public ReactRepository(Context _context) : base(_context)
+        public ChatRepository(Context _context) : base(_context)
         {
+
         }
     }
 }

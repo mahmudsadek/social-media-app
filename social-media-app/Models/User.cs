@@ -26,8 +26,10 @@ namespace social_media_app.Models
 
         public IList<Comment>? Commnets {  get; set; }
 
-        public IList<React>? Reacts {  get; set; } 
-        
+        public IList<React>? Reacts {  get; set; }
+
+        public IList<Chat>? Chats { get; set; }
+
         public IList<User>? Followers { get; set; }
 
         public List<User>? PeopleIFollow { get; set; }

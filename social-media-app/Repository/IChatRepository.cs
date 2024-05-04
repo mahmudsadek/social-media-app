@@ -2,8 +2,7 @@
 
 namespace social_media_app.Repository
 {
-    public interface IReactRepository : IRepository<React>
+    public interface IChatRepository : IRepository<Chat>
     {
-        
     }
 }
