@@ -42,6 +42,8 @@ namespace social_media_app
             builder.Services.AddScoped<IReplayRepository, ReplayRepository>();
             builder.Services.AddScoped<INotifyRepository, NotifyRepository>();
             builder.Services.AddScoped<IUserFollowerRepository, UserFollowerRepository>();
+            builder.Services.AddScoped<IChatRepository, ChatRepository>();
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
             builder.Services.AddAuthentication(options =>
             {

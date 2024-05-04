@@ -170,6 +170,35 @@ namespace social_media_app.Migrations
                     b.ToTable("UserUser");
                 });
 
+            modelBuilder.Entity("social_media_app.Models.Chat", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("MessagesId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Chats");
+                });
+
             modelBuilder.Entity("social_media_app.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
@@ -199,6 +228,38 @@ namespace social_media_app.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comment");
+                });
+
+            modelBuilder.Entity("social_media_app.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChatId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReceiverMessage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReceiverMessagesTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SenderMessage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SenderMessageTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("social_media_app.Models.Notify", b =>
@@ -511,6 +572,13 @@ namespace social_media_app.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("social_media_app.Models.Chat", b =>
+                {
+                    b.HasOne("social_media_app.Models.User", null)
+                        .WithMany("Chats")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("social_media_app.Models.Comment", b =>
                 {
                     b.HasOne("social_media_app.Models.Post", "Post")
@@ -528,6 +596,17 @@ namespace social_media_app.Migrations
                     b.Navigation("Post");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("social_media_app.Models.Message", b =>
+                {
+                    b.HasOne("social_media_app.Models.Chat", "chat")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("chat");
                 });
 
             modelBuilder.Entity("social_media_app.Models.Notify", b =>
@@ -625,6 +704,11 @@ namespace social_media_app.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("social_media_app.Models.Chat", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
             modelBuilder.Entity("social_media_app.Models.Comment", b =>
                 {
                     b.Navigation("Replays");
@@ -639,6 +723,8 @@ namespace social_media_app.Migrations
 
             modelBuilder.Entity("social_media_app.Models.User", b =>
                 {
+                    b.Navigation("Chats");
+
                     b.Navigation("Commnets");
 
                     b.Navigation("Posts");

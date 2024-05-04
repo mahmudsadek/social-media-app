@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using social_media_app.DTOs;
+using social_media_app.Models;
+using social_media_app.Repository;
 
 namespace social_media_app.Controllers
 {
@@ -7,6 +11,84 @@ namespace social_media_app.Controllers
     [ApiController]
     public class ChatController : ControllerBase
     {
+        private readonly IChatRepository chatRepository;
+        private readonly IMessageRepository messageRepository;
+
+        public ChatController(IChatRepository _chatRepository, IMessageRepository _messageRepository)
+        {
+            chatRepository = _chatRepository;
+            messageRepository = _messageRepository;
+        }
+
+
+        [HttpGet]
+        public IActionResult GetChat(int id)
+        {
+            Chat chat = chatRepository.Get(id, "Messages");
+            if (chat == null)
+            {
+                return NotFound();
+            }
+
+            ChatDTO chatDto = new ChatDTO();
+            chatDto.Id = chat.Id;
+            chatDto.SenderId = chat.SenderId;
+            chatDto.ReceiverId = chat.ReceiverId;
+            chatDto.MessagesId = chat.MessagesId;
+
+            return Ok(chatDto);
+        }
+
+        [HttpGet("all")]
+        public IActionResult GetAll()
+        {
+            return Ok(chatRepository.GetAll());
+        }
+
+        [HttpPost]
+        public IActionResult NewChat(ChatDTO chat)
+        {
+            if (ModelState.IsValid == true)
+            {
+                Chat newChat = new();
+                newChat.Id = chat.Id;
+                newChat.SenderId = chat.SenderId;
+                newChat.ReceiverId = chat.ReceiverId;
+                newChat.MessagesId = null;
+
+                chatRepository.Insert(newChat);
+                chatRepository.Save();
+                return CreatedAtAction("GetChat", new { id = newChat.Id }, newChat);
+
+            }
+            return BadRequest(ModelState);
+
+        }
+
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteChat(int id)
+        {
+            Chat chat = chatRepository.Get(id, "Messages");
+            if (chat == null)
+            {
+                return NotFound();
+            }
+
+            if(chat.MessagesId == null)
+            {
+                chatRepository.Delete(chat);
+                chatRepository.Save();
+            } else
+            {
+                chat.MessagesId = null;
+                chatRepository.DeleteChatHaveMessages(chat);
+            }
+
+            return NoContent();
+        }
+
+
 
     }
 }
