@@ -7,7 +7,8 @@ namespace social_media_app.DTOs
     {
         public int Id { get; set; }
         public string SenderId { get; set; }
-        public string ReceiverId { get; set; }
-        public List<int>? MessagesId { get; set; }
+        public List<string> ReceiversIds { get; set; }
+        public List<string>? SenderMessages { get; set; }
+        public List<string>? ReceiverMessages { get; set; }
     }
 }

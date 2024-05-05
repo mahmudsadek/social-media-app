@@ -7,12 +7,14 @@ namespace social_media_app.Models
         public int Id { get; set; }
         [ForeignKey("User")]
         public string SenderId { get; set; }
-
-        [ForeignKey("User")]
-        public string ReceiverId { get; set; }
+        public List<User> Users { get; set; }
 
         [ForeignKey("Message")]
-        public List<int>? MessagesId { get; set; }
+        public int? LastMessageId { get; set; }
+
+        [ForeignKey("User")]
+        public List<string> ReceiversIds { get; set; } //More than one in case of grouping
+
         public List<Message>? Messages { get; set; }
 
     }

@@ -11,9 +11,9 @@ namespace social_media_app.Repository
 
         }
 
-        public Chat? Get(int Id, string include)
+        public Chat GetChatWithMessages(int Id, string include)
         {
-            Chat? chat = Context.Chats.Include(include)
+            Chat chat = Context.Chats.Include(include)
                 .FirstOrDefault(chat => chat.Id == Id);
 
             return chat;
@@ -25,5 +25,19 @@ namespace social_media_app.Repository
             Context.Chats.Remove(chat);
             Context.SaveChanges();
         }
+
+        public List<Message> GetAllUserMessages(int chatId, string userId)
+        {
+            Chat chat = GetChatWithMessages(chatId, "Messages");
+            List<Message> messages = new();
+
+            foreach (Message message in chat.Messages)
+            {
+                messages = Context.Messages.Where(m => m.SenderMessageId == userId).ToList();
+            }
+            return messages;
+        }
+
+
     }
 }
