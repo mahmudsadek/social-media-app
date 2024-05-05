@@ -115,21 +115,24 @@ namespace social_media_app.Controllers
             List<FollowersSuggestionDTO> followersSuggestions = new();
             foreach (var user in Users)
             {
-                bool followed = false;
-                foreach (var follower in Followers)
+                if(user.Id != id) 
                 {
-                    if (user.Id == follower.UserID && id == follower.FollowerID)
-                        followed = true;
-                }
-                if(!followed)
-                {
-                    FollowersSuggestionDTO follower = new() 
-                    { 
-                        Id = user.Id, Email = user.Email, UserName = user.UserName, 
-                        UserImage = user.ProfileImage, CoverImage = user.CoverImage 
-                    };
+                    bool followed = false;
+                    foreach (var follower in Followers)
+                    {
+                        if (user.Id == follower.UserID && id == follower.FollowerID)
+                            followed = true;
+                    }
+                    if(!followed)
+                    {
+                        FollowersSuggestionDTO follower = new() 
+                        { 
+                            Id = user.Id, Email = user.Email, UserName = user.UserName, 
+                            UserImage = user.ProfileImage, CoverImage = user.CoverImage 
+                        };
 
-                    followersSuggestions.Add(follower);
+                        followersSuggestions.Add(follower);
+                    }
                 }
             }
 
