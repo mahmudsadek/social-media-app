@@ -17,6 +17,6 @@ namespace social_media_app.Models
 
         public User Follower { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
     }
 }

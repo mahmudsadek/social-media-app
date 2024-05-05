@@ -11,7 +11,7 @@ namespace social_media_app.Models
         public int Id { get; set; }
         public string Content { get; set; }
 
-        public DateTime CommentTime { get; set; }
+        public DateTime CommentTime { get; set; } = DateTime.Now;
 
         [ForeignKey("Post")]
         public int PostId { get; set; }
