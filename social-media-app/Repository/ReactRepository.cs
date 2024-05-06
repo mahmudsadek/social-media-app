@@ -14,7 +14,14 @@ namespace social_media_app.Repository
             return Context.React.Where(r => r.PostId == postId && r.UserId == userId).FirstOrDefault();
         }
 
+        public int? GetReactCount(int postId, bool isLike)
+        {
+            return Context.React
+                .Count(r => r.PostId == postId && r.Value == isLike);
+        }
+        
         public List<React> GetAll(int postId)
+
         {
             return Context.React.Where(p => p.PostId == postId).ToList();
         }

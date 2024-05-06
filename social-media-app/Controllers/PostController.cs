@@ -40,7 +40,10 @@ namespace social_media_app.Controllers
                     Content = post.Content,
                     PostTime = post.PostTime,
                     PostImage = post.PostImage,
-                    UserId = post.UserId
+                    UserId = post.UserId,
+                    LikeCount = post.Reactions?.Count(r => r.Value == true),
+                    DislikeCount = post.Reactions?.Count(r => r.Value == false)
+
                 })
                 .ToList();
 
@@ -69,6 +72,43 @@ namespace social_media_app.Controllers
 
             return Ok(postDTO);
         }
+
+
+
+
+
+
+
+        [HttpGet("reactions/{id}")]
+        public ActionResult<PostReactionsDTO> GetPostReactions(int id)
+        {
+            var post = _postRepository.Get(id);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var postReactionsDTO = new PostReactionsDTO
+            {
+                PostId = id,
+                LikeCount = _reactRepository.GetReactCount(id, true),
+                DislikeCount = _reactRepository.GetReactCount(id, false)
+            };
+
+            return Ok(postReactionsDTO);
+        }
+
+
+
+
+
+
+
+
+
+
+
 
         // POST: api/posts
         [HttpPost]
