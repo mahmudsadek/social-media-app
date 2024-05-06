@@ -187,7 +187,7 @@ namespace social_media_app.Migrations
                     b.HasIndex("userId")
                         .IsUnique();
 
-                    b.ToTable("Bookmark");
+                    b.ToTable("Bookmarks");
                 });
 
             modelBuilder.Entity("social_media_app.Models.Chat", b =>

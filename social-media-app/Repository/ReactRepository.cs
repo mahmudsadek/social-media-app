@@ -8,6 +8,12 @@ namespace social_media_app.Repository
         public ReactRepository(Context _context) : base(_context)
         {
         }
+
+        public React GetReact(int postId, string userId)
+        {
+            return Context.React.Where(r => r.PostId == postId && r.UserId == userId).FirstOrDefault();
+        }
+
         public List<React> GetAll(int postId)
         {
             return Context.React.Where(p => p.PostId == postId).ToList();
