@@ -11,7 +11,9 @@ namespace social_media_app.Repository
 
         public React GetReact(int postId, string userId)
         {
-            return Context.React.Where(r => r.PostId == postId && r.UserId == userId).FirstOrDefault();
+            return Context.React.
+                Where(r => r.PostId == postId && r.UserId == userId)
+                .FirstOrDefault();
         }
 
         public int? GetReactCount(int postId, bool isLike)
@@ -23,12 +25,16 @@ namespace social_media_app.Repository
         public List<React> GetAll(int postId)
 
         {
-            return Context.React.Where(p => p.PostId == postId).ToList();
+            return Context.React
+                .Where(p => p.PostId == postId)
+                .ToList();
         }
 
         public string CheckReactOnPost(int postId, string userId)
         {
-            React? react = Context.React.Where(r => r.PostId == postId && r.UserId == userId).FirstOrDefault();
+            React? react = Context.React
+                .Where(r => r.PostId == postId && r.UserId == userId)
+                .FirstOrDefault();
 
             return react != null ? "Found" : "Not found";
         }

@@ -21,7 +21,7 @@ namespace social_media_app.Controllers
 
         //GET React by ID
 
-        [HttpGet("{id:int}")]
+        [HttpGet]
         public IActionResult GetReact(int postId, string userId)
         {
             if (reactRepository.CheckReactOnPost(postId, userId) == "Found")
@@ -68,9 +68,10 @@ namespace social_media_app.Controllers
                     reactRepository.Insert(react);
                     reactRepository.Save();
 
-                    return CreatedAtAction("GetById", new { id = react.Id }, react);
+                    return CreatedAtAction("GetReact", new { postId = react.PostId, userId = react.UserId }, react);
                 }
 
+                // RedirectToAction("RemoveReact", new { postId = ReactDto.PostId, userId = ReactDto.UserId });
                 return RemoveReact(ReactDto.PostId, ReactDto.UserId);
             }
 
