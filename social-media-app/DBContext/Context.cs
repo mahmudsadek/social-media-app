@@ -24,6 +24,8 @@ namespace social_media_app.DBContext
         public DbSet<Chat> Chats { get; set; }
         public DbSet<Message> Messages { get; set; }
 
+        public DbSet<Bookmark> Bookmarks { get; set; }
+
 
 
         public Context(DbContextOptions dbContextOptions) : base(dbContextOptions) { }
