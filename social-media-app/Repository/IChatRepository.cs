@@ -10,5 +10,4 @@ namespace social_media_app.Repository
         public void DeleteChatHaveMessages(Chat chat);
     }
 
-
 }

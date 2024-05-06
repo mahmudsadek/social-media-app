@@ -55,17 +55,22 @@ namespace social_media_app.Controllers
         {
             if (ModelState.IsValid == true)
             {
-                React react = new();
+                if(reactRepository.CheckReactOnPost(ReactDto.PostId, ReactDto.UserId) == "Not found")
+                {
+                    React react = new();
 
-                react.Id = ReactDto.Id;
-                react.Value = ReactDto.Value;
-                react.PostId = ReactDto.PostId;
-                react.UserId = ReactDto.UserId;
+                    react.Id = ReactDto.Id;
+                    react.Value = ReactDto.Value;
+                    react.PostId = ReactDto.PostId;
+                    react.UserId = ReactDto.UserId;
 
-                reactRepository.Insert(react);
-                reactRepository.Save();
+                    reactRepository.Insert(react);
+                    reactRepository.Save();
 
-                return CreatedAtAction("GetById", new { id = react.Id }, react);
+                    return CreatedAtAction("GetById", new { id = react.Id }, react);
+                }
+
+                return BadRequest("This user have reacted on this post already");
             }
 
             return BadRequest(ModelState);

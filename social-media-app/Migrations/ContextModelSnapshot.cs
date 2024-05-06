@@ -22,21 +22,6 @@ namespace social_media_app.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ChatUser", b =>
-                {
-                    b.Property<int>("ChatsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ChatsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("ChatUser");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -185,6 +170,26 @@ namespace social_media_app.Migrations
                     b.ToTable("UserUser");
                 });
 
+            modelBuilder.Entity("social_media_app.Models.Bookmark", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("userId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("userId")
+                        .IsUnique();
+
+                    b.ToTable("Bookmark");
+                });
+
             modelBuilder.Entity("social_media_app.Models.Chat", b =>
                 {
                     b.Property<int>("Id")
@@ -196,15 +201,17 @@ namespace social_media_app.Migrations
                     b.Property<int?>("LastMessageId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ReceiversIds")
+                    b.Property<string>("ReceiverId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SenderId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
 
                     b.ToTable("Chats");
                 });
@@ -314,6 +321,9 @@ namespace social_media_app.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("BookmarkId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CommentCount")
                         .HasColumnType("int");
 
@@ -338,6 +348,8 @@ namespace social_media_app.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookmarkId");
 
                     b.HasIndex("UserId");
 
@@ -521,21 +533,6 @@ namespace social_media_app.Migrations
                     b.ToTable("UserFollower");
                 });
 
-            modelBuilder.Entity("ChatUser", b =>
-                {
-                    b.HasOne("social_media_app.Models.Chat", null)
-                        .WithMany()
-                        .HasForeignKey("ChatsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("social_media_app.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -602,6 +599,28 @@ namespace social_media_app.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("social_media_app.Models.Bookmark", b =>
+                {
+                    b.HasOne("social_media_app.Models.User", "User")
+                        .WithOne("bookmark")
+                        .HasForeignKey("social_media_app.Models.Bookmark", "userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("social_media_app.Models.Chat", b =>
+                {
+                    b.HasOne("social_media_app.Models.User", "ReceiverUser")
+                        .WithMany("Chats")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReceiverUser");
+                });
+
             modelBuilder.Entity("social_media_app.Models.Comment", b =>
                 {
                     b.HasOne("social_media_app.Models.Post", "Post")
@@ -661,6 +680,10 @@ namespace social_media_app.Migrations
 
             modelBuilder.Entity("social_media_app.Models.Post", b =>
                 {
+                    b.HasOne("social_media_app.Models.Bookmark", null)
+                        .WithMany("posts")
+                        .HasForeignKey("BookmarkId");
+
                     b.HasOne("social_media_app.Models.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
@@ -735,6 +758,11 @@ namespace social_media_app.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("social_media_app.Models.Bookmark", b =>
+                {
+                    b.Navigation("posts");
+                });
+
             modelBuilder.Entity("social_media_app.Models.Chat", b =>
                 {
                     b.Navigation("Messages");
@@ -754,11 +782,15 @@ namespace social_media_app.Migrations
 
             modelBuilder.Entity("social_media_app.Models.User", b =>
                 {
+                    b.Navigation("Chats");
+
                     b.Navigation("Commnets");
 
                     b.Navigation("Posts");
 
                     b.Navigation("Reacts");
+
+                    b.Navigation("bookmark");
                 });
 #pragma warning restore 612, 618
         }
