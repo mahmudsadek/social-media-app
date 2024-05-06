@@ -24,7 +24,7 @@ namespace social_media_app.Controllers
         [HttpGet]
         public IActionResult GetChat(int id)
         {
-            Chat chat = chatRepository.GetChatWithMessages(id, "Messages");
+            Chat chat = chatRepository.GetChatWithMessagesAndUsers(id, "Messages");
             if (chat == null)
             {
                 return NotFound();
@@ -33,7 +33,7 @@ namespace social_media_app.Controllers
             ChatDTO chatDto = new ChatDTO();
             chatDto.Id = chat.Id;
             chatDto.SenderId = chat.SenderId;
-            chatDto.ReceiversIds = chat.ReceiversIds;
+            chatDto.ReceiverId = chat.ReceiverId;
 
             return Ok(chatDto);
         }
@@ -52,7 +52,7 @@ namespace social_media_app.Controllers
                 Chat newChat = new();
                 newChat.Id = chat.Id;
                 newChat.SenderId = chat.SenderId;
-                newChat.ReceiversIds = chat.ReceiversIds;
+                newChat.ReceiverId = chat.ReceiverId; // One to one 
 
                 chatRepository.Insert(newChat);
                 chatRepository.Save();
@@ -67,7 +67,7 @@ namespace social_media_app.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteChat(int id)
         {
-            Chat chat = chatRepository.GetChatWithMessages(id, "Messages");
+            Chat chat = chatRepository.GetChatWithMessagesAndUsers(id, "Messages");
             if (chat == null)
             {
                 return NotFound();

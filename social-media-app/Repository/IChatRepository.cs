@@ -5,7 +5,7 @@ namespace social_media_app.Repository
 {
     public interface IChatRepository : IRepository<Chat>
     {
-        public Chat? GetChatWithMessages(int Id, string include);
+        public Chat? GetChatWithMessagesAndUsers(int Id, string include);
 
         public void DeleteChatHaveMessages(Chat chat);
     }

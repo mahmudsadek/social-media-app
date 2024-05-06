@@ -8,5 +8,9 @@ namespace social_media_app.Repository
         public ReactRepository(Context _context) : base(_context)
         {
         }
+        public List<React> GetAll(int postId)
+        {
+            return Context.React.Where(p => p.PostId == postId).ToList();
+        }
     }
 }

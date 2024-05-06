@@ -251,12 +251,8 @@ namespace social_media_app.Migrations
                     b.Property<int>("ChatId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("MessageSeen")
+                    b.Property<bool>("MessageHaveSeen")
                         .HasColumnType("bit");
-
-                    b.Property<string>("ReceiverMessageText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ReceiverMessagesTime")
                         .HasColumnType("datetime2");
@@ -265,12 +261,12 @@ namespace social_media_app.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("SenderMessageText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("SenderMessageTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("TextMessage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

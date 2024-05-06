@@ -5,16 +5,15 @@ namespace social_media_app.Models
     public class Chat
     {
         public int Id { get; set; }
-        [ForeignKey("User")]
+        [ForeignKey("SenderUser")]
         public string SenderId { get; set; }
-        public List<User> Users { get; set; }
 
         [ForeignKey("Message")]
         public int? LastMessageId { get; set; }
 
-        [ForeignKey("User")]
-        public List<string> ReceiversIds { get; set; } //More than one in case of grouping
-
+        [ForeignKey("ReceiverUser")]
+        public string ReceiverId { get; set; } //More than one in case of grouping
+        public User ReceiverUser { get; set; }
         public List<Message>? Messages { get; set; }
 
     }

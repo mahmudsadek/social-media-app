@@ -11,7 +11,7 @@ namespace social_media_app.Repository
 
         }
 
-        public Chat GetChatWithMessages(int Id, string include)
+        public Chat GetChatWithMessagesAndUsers(int Id, string include)
         {
             Chat chat = Context.Chats.Include(include)
                 .FirstOrDefault(chat => chat.Id == Id);
@@ -28,7 +28,7 @@ namespace social_media_app.Repository
 
         public List<Message> GetAllUserMessages(int chatId, string userId)
         {
-            Chat chat = GetChatWithMessages(chatId, "Messages");
+            Chat chat = GetChatWithMessagesAndUsers(chatId, "Messages");
             List<Message> messages = new();
 
             foreach (Message message in chat.Messages)
