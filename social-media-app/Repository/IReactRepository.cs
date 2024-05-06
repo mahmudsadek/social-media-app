@@ -10,6 +10,9 @@ namespace social_media_app.Repository
 
         List<React> Get(Func<React, bool> where);
 
+
+        int? GetReactCount(int postId, bool isLike);
+
         void Insert(React item);
 
         void Update(React item);

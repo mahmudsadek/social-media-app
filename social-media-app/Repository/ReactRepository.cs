@@ -47,6 +47,16 @@ namespace social_media_app.Repository
             return Context.Set<React>().Where(where).ToList();
         }
 
+
+        public int? GetReactCount(int postId, bool isLike)
+        {
+            return Context.React
+                .Count(r => r.PostId == postId && r.Value == isLike);
+        }
+
+
+
+
         public void Insert(React item)
         {
             Context.Add(item);
