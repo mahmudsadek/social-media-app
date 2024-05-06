@@ -2,8 +2,7 @@
 
 namespace social_media_app.Repository
 {
-    public interface ICommentRepository : IRepository<Comment>
+    public interface IBookmarkRepository : IRepository<Bookmark>
     {
-
     }
 }

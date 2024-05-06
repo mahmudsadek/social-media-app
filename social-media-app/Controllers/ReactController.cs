@@ -22,18 +22,33 @@ namespace social_media_app.Controllers
         //GET React by ID
 
         [HttpGet("{id:int}")]
-        public IActionResult GetById(int id)
+        public IActionResult GetReact(int postId, string userId)
         {
-            return Ok(reactRepository.Get(id));
+            if (reactRepository.CheckReactOnPost(postId, userId) == "Found")
+            {
+                React react = reactRepository.GetReact(postId, userId);
+
+                ReactWithoutPostAndUserObj reactDto = new();
+
+                reactDto.Id = react.Id;
+                reactDto.UserId = react.UserId;
+                reactDto.Value = react.Value;
+                reactDto.PostId = react.PostId;
+
+                return Ok(reactDto);
+
+            }
+            return NotFound();
+
         }
 
 
         //GET ALL Reacts
 
         [HttpGet("all")]
-        public IActionResult GetAll()
+        public IActionResult GetAll(int postId)
         {
-            return Ok(reactRepository.GetAll());
+            return Ok(reactRepository.GetAll(postId));
         }
 
         [HttpPost]
@@ -41,17 +56,22 @@ namespace social_media_app.Controllers
         {
             if (ModelState.IsValid == true)
             {
-                React react = new();
+                if(reactRepository.CheckReactOnPost(ReactDto.PostId, ReactDto.UserId) == "Not found")
+                {
+                    React react = new();
 
-                react.Id = ReactDto.Id;
-                react.Value = ReactDto.Value;
-                react.PostId = ReactDto.PostId;
-                react.UserId = ReactDto.UserId;
+                    react.Id = ReactDto.Id;
+                    react.Value = ReactDto.Value;
+                    react.PostId = ReactDto.PostId;
+                    react.UserId = ReactDto.UserId;
 
-                reactRepository.Insert(react);
-                reactRepository.Save();
+                    reactRepository.Insert(react);
+                    reactRepository.Save();
 
-                return CreatedAtAction("GetById", new { id = react.Id }, react);
+                    return CreatedAtAction("GetById", new { id = react.Id }, react);
+                }
+
+                return RemoveReact(ReactDto.PostId, ReactDto.UserId);
             }
 
             return BadRequest(ModelState);
@@ -77,11 +97,11 @@ namespace social_media_app.Controllers
         }
 
         [HttpDelete]
-        public IActionResult RemoveReact(int id)
+        public IActionResult RemoveReact(int postId, string userId)
         {
             try
             {
-                reactRepository.Delete(reactRepository.Get(id));
+                reactRepository.Delete(reactRepository.GetReact(postId, userId));
                 reactRepository.Save();
 
                 return NoContent();

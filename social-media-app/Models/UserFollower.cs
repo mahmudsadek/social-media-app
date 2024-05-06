@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace social_media_app.Models
 {
 
-    [PrimaryKey(nameof(UserID), nameof(FollowerID))]
     public class UserFollower
     {
+        public int Id { get; set; }
         [ForeignKey("User")]
         public string UserID { get; set; }
 
@@ -17,6 +17,6 @@ namespace social_media_app.Models
 
         public User Follower { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
     }
 }

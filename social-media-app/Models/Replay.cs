@@ -7,7 +7,7 @@ namespace social_media_app.Models
         public int Id { get; set; }
         public string Content { get; set; }
 
-        public DateTime ReplayTime { get; set; }
+        public DateTime ReplayTime { get; set; } = DateTime.Now;
 
         [ForeignKey("Comment")]
         public int CommentId { get; set; }

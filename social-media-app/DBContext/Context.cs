@@ -12,10 +12,22 @@ namespace social_media_app.DBContext
 
         public DbSet<Comment> Comment { get; set; } 
 
+        public DbSet<Notify> Notify { get; set; } 
+
+
         public DbSet<React> React { get; set; }
 
         public DbSet<Replay> Replay { get; set; }
-        
+
+        public DbSet<UserFollower> UserFollower { get; set; }
+
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
+
+        public DbSet<Bookmark> Bookmarks { get; set; }
+
+
+
         public Context(DbContextOptions dbContextOptions) : base(dbContextOptions) { }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,15 +39,6 @@ namespace social_media_app.DBContext
 
         //}
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Post>().HasData(
-                new Post { Id = 1, Content = "First post", PostTime = DateTime.Now, UserId = "user1", LoveCount = 0, CommentCount = 0, ShareCount = 0 },
-                new Post { Id = 2, Content = "Second post", PostTime = DateTime.Now, UserId = "user2", LoveCount = 0, CommentCount = 0, ShareCount = 0 }
-            );
-        }
 
     }
 

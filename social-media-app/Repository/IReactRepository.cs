@@ -4,21 +4,12 @@ namespace social_media_app.Repository
 {
     public interface IReactRepository : IRepository<React>
     {
-        List<React> GetAll(string[] includes = null);
 
-        React Get(int id);
+        pulbic int? GetReactCount(int postId, bool isLike);
 
-        List<React> Get(Func<React, bool> where);
+        public React GetReact(int postId, string userId);
+        public string CheckReactOnPost(int postId, string userId);
+        public List<React> GetAll(int postId);
 
-
-        int? GetReactCount(int postId, bool isLike);
-
-        void Insert(React item);
-
-        void Update(React item);
-
-        void Delete(React item);
-
-        void Save();
     }
 }

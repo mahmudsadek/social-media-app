@@ -8,7 +8,7 @@ namespace social_media_app.Models
         [Required]
         [MaxLength(20, ErrorMessage = "Name Must Be Less Than 20 Char")]
         [MinLength(3, ErrorMessage = "Name Must Be More That 3 Char")]
-        public string Name { get; set; } = "sa";
+        public string? Name { get; set; } = "sa";
 
         public string? ProfileImage { get; set; } = "dss";
 
@@ -26,8 +26,12 @@ namespace social_media_app.Models
 
         public IList<Comment>? Commnets {  get; set; }
 
-        public IList<React>? Reacts {  get; set; } 
-        
+        public IList<React>? Reacts {  get; set; }
+
+        public IList<Chat>? Chats { get; set; }
+
+        public Bookmark? bookmark { get; set; }
+
         public IList<User>? Followers { get; set; }
 
         public List<User>? PeopleIFollow { get; set; }

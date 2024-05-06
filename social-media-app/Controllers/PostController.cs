@@ -36,6 +36,7 @@ namespace social_media_app.Controllers
             var posts = _postRepository.GetAll()
                 .Select(post => new PostDTO
                 {
+                    Id = post.Id,
                     Content = post.Content,
                     PostTime = post.PostTime,
                     PostImage = post.PostImage,
@@ -62,6 +63,7 @@ namespace social_media_app.Controllers
 
             var postDTO = new PostDTO
             {
+                Id = post.Id,
                 Content = post.Content,
                 PostTime = post.PostTime,
                 PostImage = post.PostImage,
@@ -114,6 +116,7 @@ namespace social_media_app.Controllers
         {
             var post = new Post
             {
+                
                 Content = postDTO.Content,
                 PostTime = (DateTime)postDTO.PostTime,
                 PostImage = postDTO.PostImage,
@@ -135,6 +138,7 @@ namespace social_media_app.Controllers
             {
                 return NotFound();
             }
+
 
             post.Content = postDTO.Content;
             post.PostTime = (DateTime)postDTO.PostTime;
