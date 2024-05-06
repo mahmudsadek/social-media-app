@@ -4,18 +4,6 @@ namespace social_media_app.Repository
 {
     public interface IReactRepository : IRepository<React>
     {
-        List<React> GetAll(string[] includes = null);
-
-        React Get(int id);
-
-        List<React> Get(Func<React, bool> where);
-
-        void Insert(React item);
-
-        void Update(React item);
-
-        void Delete(React item);
-
-        void Save();
+        public List<React> GetAll(int postId);
     }
 }

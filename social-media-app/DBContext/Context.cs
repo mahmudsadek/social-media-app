@@ -21,7 +21,8 @@ namespace social_media_app.DBContext
 
         public DbSet<UserFollower> UserFollower { get; set; }
 
-
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
 
 

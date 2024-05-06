@@ -24,16 +24,30 @@ namespace social_media_app.Controllers
         [HttpGet("{id:int}")]
         public IActionResult GetById(int id)
         {
-            return Ok(reactRepository.Get(id));
+            React react = reactRepository.Get(id);
+            if (react != null)
+            {
+                ReactWithoutPostAndUserObj reactDto = new();
+
+                reactDto.Id = react.Id;
+                reactDto.UserId = react.UserId;
+                reactDto.Value = react.Value;
+                reactDto.PostId = react.PostId;
+
+                return Ok(reactDto);
+
+            }
+            return NotFound();
+
         }
 
 
         //GET ALL Reacts
 
         [HttpGet("all")]
-        public IActionResult GetAll()
+        public IActionResult GetAll(int postId)
         {
-            return Ok(reactRepository.GetAll());
+            return Ok(reactRepository.GetAll(postId));
         }
 
         [HttpPost]
