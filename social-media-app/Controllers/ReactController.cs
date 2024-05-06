@@ -22,11 +22,12 @@ namespace social_media_app.Controllers
         //GET React by ID
 
         [HttpGet("{id:int}")]
-        public IActionResult GetById(int id)
+        public IActionResult GetReact(int postId, string userId)
         {
-            React react = reactRepository.Get(id);
-            if (react != null)
+            if (reactRepository.CheckReactOnPost(postId, userId) == "Found")
             {
+                React react = reactRepository.GetReact(postId, userId);
+
                 ReactWithoutPostAndUserObj reactDto = new();
 
                 reactDto.Id = react.Id;
@@ -70,7 +71,7 @@ namespace social_media_app.Controllers
                     return CreatedAtAction("GetById", new { id = react.Id }, react);
                 }
 
-                return BadRequest("This user have reacted on this post already");
+                return RemoveReact(ReactDto.PostId, ReactDto.UserId);
             }
 
             return BadRequest(ModelState);
@@ -96,11 +97,11 @@ namespace social_media_app.Controllers
         }
 
         [HttpDelete]
-        public IActionResult RemoveReact(int id)
+        public IActionResult RemoveReact(int postId, string userId)
         {
             try
             {
-                reactRepository.Delete(reactRepository.Get(id));
+                reactRepository.Delete(reactRepository.GetReact(postId, userId));
                 reactRepository.Save();
 
                 return NoContent();
