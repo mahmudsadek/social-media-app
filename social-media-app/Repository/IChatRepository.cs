@@ -7,7 +7,11 @@ namespace social_media_app.Repository
     {
         public Chat? GetChatWithMessagesAndUsers(int Id, string include);
 
+        public List<Message> GetAllUserMessages(Chat chat,string userId);
+
         public void DeleteChatHaveMessages(Chat chat);
+
+        public string GetUserName (string userId);
     }
 
 }

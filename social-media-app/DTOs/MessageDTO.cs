@@ -11,6 +11,7 @@ namespace social_media_app.DTOs
         public string SenderMessage { get; set; }
         public DateTime ReceiverMessagesTime { get; set; }
         public string ReceiverMessage { get; set; }
+        public bool HaveSeen { get; set; } = false;
 
     }
 }
