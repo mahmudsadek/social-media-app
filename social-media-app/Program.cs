@@ -1,13 +1,14 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using social_media_app.DBContext;
 using social_media_app.Models;
 using social_media_app.Repository;
-
+using social_media_app.Services;
 using System.Text;
 
 namespace social_media_app
@@ -31,7 +32,7 @@ namespace social_media_app
             });
 
             builder.Services.AddScoped<IReactRepository, ReactRepository>();
-            builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Context>();
+            //builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Context>();
 
             builder.Services.AddCors(options => options.AddPolicy("MyPolicy", policy => 
             policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()));
@@ -44,7 +45,20 @@ namespace social_media_app
             builder.Services.AddScoped<IUserFollowerRepository, UserFollowerRepository>();
             builder.Services.AddScoped<IChatRepository, ChatRepository>();
             builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-
+            builder.Services.AddTransient<ISenderEmail, SenderEmail>();
+            builder.Services.AddIdentity<User, IdentityRole>(
+                options =>
+                {
+                    // Password settings
+                    options.Password.RequireDigit = true;
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequiredUniqueChars = 4;
+                })
+                .AddEntityFrameworkStores<Context>()
+                .AddDefaultTokenProviders();
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme =
