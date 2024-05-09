@@ -185,5 +185,33 @@ namespace social_media_app.Controllers
             return NoContent();
         }
 
+
+        // GET: api/posts/user/{userId}
+        [HttpGet("user/{userId}")]
+        public ActionResult<IEnumerable<PostDTO>> GetPostsByUserId(string userId)
+        {
+            // Retrieve posts associated with the provided user ID
+            var posts = _postRepository.Get(post => post.UserId == userId)
+                .Select(post => new PostDTO
+                {
+                    Id = post.Id,
+                    Content = post.Content,
+                    PostTime = post.PostTime,
+                    PostImage = post.PostImage,
+                    UserId = post.UserId,
+                    LikeCount = post.Reactions?.Count(r => r.Value == true),
+                    DislikeCount = post.Reactions?.Count(r => r.Value == false)
+                })
+                .ToList();
+
+            if (posts.Count == 0)
+            {
+                return NotFound($"No posts found for user with ID: {userId}");
+            }
+
+            return Ok(posts);
+        }
+
+
     }
 }
