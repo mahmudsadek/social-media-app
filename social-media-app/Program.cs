@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using social_media_app.DBContext;
+using social_media_app.Hubs;
 using social_media_app.Models;
 using social_media_app.Repository;
 
@@ -35,7 +36,7 @@ namespace social_media_app
 
             builder.Services.AddCors(options => options.AddPolicy("MyPolicy", policy => 
             policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()));
-
+            builder.Services.AddSignalR();
 
             builder.Services.AddScoped<ICommentRepository, CommentRepository>();
             builder.Services.AddScoped<IPostRepository, PostRepository>();
@@ -80,7 +81,7 @@ namespace social_media_app
 
             app.UseAuthorization();
 
-            
+            app.MapHub<ChatHub>("/ChatH"); // to differ from ChatController
 
             app.MapControllers();
 
