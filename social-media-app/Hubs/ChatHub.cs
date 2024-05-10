@@ -16,7 +16,7 @@ namespace social_media_app.Hubs
         //    await Groups.AddToGroupAsync(Context.ConnectionId)
         //}
 
-        public Task SendPrivateMessage(string userId, string message)
+        public Task SendPrivateMessage(string userId, Message message)
         {
             return Clients.User(userId).SendAsync("ReceiveMessage", message);
         }
