@@ -105,7 +105,7 @@ namespace social_media_app.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpPatch]
         public async Task<ActionResult> EditProfile(EditProfileDTO profileDTO)
         {
             string UserName = User.Identity.Name;

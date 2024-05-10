@@ -30,7 +30,6 @@ namespace social_media_app.Models
 
         public IList<Chat>? Chats { get; set; }
 
-        public Bookmark? bookmark { get; set; }
 
         public IList<User>? Followers { get; set; }
 
