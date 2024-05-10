@@ -31,9 +31,12 @@ namespace social_media_app.Controllers
             }
 
             ChatDTO chatDto = new ChatDTO();
-            chatDto.Id = chat.Id;
+            chatDto.ChatName = chat.Name;
             chatDto.SenderId = chat.SenderId;
+
             chatDto.ReceiverId = chat.ReceiverId;
+            chatDto.ReceiverTextMessages = chatRepository.GetAllUserMessages(chat, chat.ReceiverId);
+            chatDto.SenderTextMessages = chatRepository.GetAllUserMessages(chat, chat.SenderId);
 
             return Ok(chatDto);
         }
@@ -50,7 +53,7 @@ namespace social_media_app.Controllers
             if (ModelState.IsValid == true)
             {
                 Chat newChat = new();
-                newChat.Id = chat.Id;
+                //newChat.Id = chat.Id;
                 newChat.SenderId = chat.SenderId;
                 newChat.ReceiverId = chat.ReceiverId; // One to one 
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using social_media_app.DBContext;
 using social_media_app.Models;
+using System.Linq;
 
 namespace social_media_app.Repository
 {
@@ -26,9 +27,8 @@ namespace social_media_app.Repository
             Context.SaveChanges();
         }
 
-        public List<Message> GetAllUserMessages(int chatId, string userId)
+        public List<Message> GetAllUserMessages(Chat chat, string userId)
         {
-            Chat chat = GetChatWithMessagesAndUsers(chatId, "Messages");
             List<Message> messages = new();
 
             foreach (Message message in chat.Messages)
@@ -36,6 +36,12 @@ namespace social_media_app.Repository
                 messages = Context.Messages.Where(m => m.SenderMessageId == userId).ToList();
             }
             return messages;
+        }
+
+        public string GetUserName(string userId)
+        {
+            User user = Context.User.FirstOrDefault(user => user.Id == userId);
+            return user.Name;
         }
 
 

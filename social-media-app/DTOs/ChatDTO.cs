@@ -5,13 +5,12 @@ namespace social_media_app.DTOs
 {
     public class ChatDTO
     {
-        public int Id { get; set; }
         public string ChatName { get; set; }
         public string SenderId { get; set; }
         public string SenderName { get; set; }
         public string ReceiverId { get; set; }
         public string ReceiverName { get; set; }
-        public string SenderMessage { get; set; }
-        public string ReceiverMessage { get; set; }
+        public List<Message>? SenderTextMessages { get; set; }
+        public List<Message>? ReceiverTextMessages { get; set; }
     }
 }

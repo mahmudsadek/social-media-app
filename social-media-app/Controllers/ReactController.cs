@@ -30,7 +30,6 @@ namespace social_media_app.Controllers
 
                 ReactWithoutPostAndUserObj reactDto = new();
 
-                reactDto.Id = react.Id;
                 reactDto.UserId = react.UserId;
                 reactDto.Value = react.Value;
                 reactDto.PostId = react.PostId;
@@ -60,7 +59,6 @@ namespace social_media_app.Controllers
                 {
                     React react = new();
 
-                    react.Id = ReactDto.Id;
                     react.Value = ReactDto.Value;
                     react.PostId = ReactDto.PostId;
                     react.UserId = ReactDto.UserId;
@@ -81,10 +79,10 @@ namespace social_media_app.Controllers
         [HttpPut]
         public IActionResult ChangeReact(int id, ReactWithoutPostAndUserObj ChangeReact)
         {
-            React react = reactRepository.Get(id);
+            React react = reactRepository.GetReact(ChangeReact.PostId, ChangeReact.UserId);
             if (react != null)
             {
-                if (react.Id == ChangeReact.Id)
+                if (react.PostId == ChangeReact.PostId && react.UserId == ChangeReact.UserId)
                 {
                     react.Value = ChangeReact.Value;
 

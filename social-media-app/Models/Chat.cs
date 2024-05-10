@@ -5,6 +5,8 @@ namespace social_media_app.Models
     public class Chat
     {
         public int Id { get; set; }
+
+        public string Name { get; set; }
         public string SenderId { get; set; }
 
         [ForeignKey("Message")]
