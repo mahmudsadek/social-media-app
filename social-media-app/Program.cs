@@ -38,6 +38,7 @@ namespace social_media_app
             builder.Services.AddCors(options => options.AddPolicy("MyPolicy", policy => 
             policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin()));
             builder.Services.AddSignalR();
+            builder.Services.AddSingleton<IDictionary<string, UserRoomConnection>>(opt => new Dictionary<string, UserRoomConnection>());
 
             builder.Services.AddScoped<ICommentRepository, CommentRepository>();
             builder.Services.AddScoped<IPostRepository, PostRepository>();
@@ -89,7 +90,7 @@ namespace social_media_app
                 {
                     Version = "v1",
                     Title = "ASP.NET 5 Web API",
-                    Description = " ITI Projrcy"
+                    Description = " ITI Project"
                 });
                 // To Enable authorization using Swagger (JWT)    
                 swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -130,7 +131,11 @@ namespace social_media_app
 
             app.UseAuthorization();
 
-            app.MapHub<ChatHub>("/ChatH"); // to differ from ChatController
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<ChatHub>("/ChatH"); // to differ from ChatController
+            });
+
 
             app.MapControllers();
 
