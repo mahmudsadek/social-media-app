@@ -12,9 +12,11 @@ namespace social_media_app.Controllers
     {
 
         private IReplayRepository _repository;
-        public ReplayController(IReplayRepository repository)
+        private INotifyRepository _notifyRepository;
+        public ReplayController(IReplayRepository repository , INotifyRepository notify)
         {
             _repository = repository;
+            _notifyRepository = notify;
         }
 
         [HttpGet]
@@ -78,6 +80,16 @@ namespace social_media_app.Controllers
 
                 _repository.Insert(replayDB);
                 _repository.Save();
+                Replay replay1 = _repository.GetAll(["User", "Comment"]).Find(c => c.Id == replayDB.Id);
+
+                {
+                    Notify notify = new Notify();
+                    notify.Content = "There is new Replay on your comment from " + replay1.User.UserName;
+                    notify.PostedUserId = replay1.UserId;
+                    notify.UserId = replay1.Comment.UserId;
+                    _notifyRepository.Insert(notify);
+                    _notifyRepository.Save();
+                }
                 return CreatedAtAction("Get", new { id = replayDB.Id }, replayDB);
 
             }
