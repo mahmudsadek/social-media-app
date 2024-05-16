@@ -10,7 +10,8 @@ namespace social_media_app.DTOs
 
         public DateTime? ReplayTime { get; set; }
 
-        
+        public String?  UserName { get; set; }
+        public string? UserImage { get; set; }
         public int CommentId { get; set; }
 
         

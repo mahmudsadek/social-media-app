@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using social_media_app.DTOs;
 using social_media_app.Models;
@@ -12,22 +13,39 @@ namespace social_media_app.Controllers
     {
 
         private IReplayRepository _repository;
-        public ReplayController(IReplayRepository repository)
+        private readonly UserManager<User> userManager;
+
+        public ReplayController(IReplayRepository repository, UserManager<User> userManager)
         {
             _repository = repository;
+            this.userManager = userManager;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             List<Replay> replays = _repository.GetAll();
-            return Ok(replays);
+            List<ReplayDTO> replayDTOs = new List<ReplayDTO>();
+            foreach (Replay replay in replays)
+            {
+                 User u = await userManager.FindByIdAsync(replay.UserId);
+                ReplayDTO r = new ReplayDTO() { CommentId = replay.CommentId
+                    , Content = replay.Content,
+                    PostId = replay.PostId,
+                    ReplayTime = replay.ReplayTime,
+                    UserId = replay.UserId,
+                    UserImage = u.ProfileImage,
+                    UserName = u.UserName
+                };
+                replayDTOs.Add(r);
+            }
+            return Ok(replayDTOs);
         }
 
         [HttpGet("{id:int}")]
         public IActionResult Get(int id)
         {
-            Replay replay = _repository.Get(id);
+            List<Replay> replay = _repository.Get(replay=>replay.CommentId == id);
             return Ok(replay);
         }
         [HttpPut]
@@ -74,7 +92,7 @@ namespace social_media_app.Controllers
                 replayDB.CommentId = replay.CommentId;
                 replayDB.Content = replay.Content;
                 replayDB.UserId = replay.UserId;
-                replayDB.ReplayTime = (DateTime)replay.ReplayTime;
+                replayDB.ReplayTime = DateTime.Now;
 
                 _repository.Insert(replayDB);
                 _repository.Save();
