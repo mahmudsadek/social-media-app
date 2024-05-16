@@ -43,10 +43,27 @@ namespace social_media_app.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult Get(int id)
+        public async Task< IActionResult> Get(int id)
         {
-            List<Replay> replay = _repository.Get(replay=>replay.CommentId == id);
-            return Ok(replay);
+            List<Replay> replays = _repository.Get(replay=>replay.CommentId == id);
+            List<ReplayDTO> replayDTOs = new List<ReplayDTO>();
+            foreach (Replay replay in replays)
+            {
+                User u = await userManager.FindByIdAsync(replay.UserId);
+                ReplayDTO r = new ReplayDTO()
+                {
+                    CommentId = replay.CommentId
+                    ,
+                    Content = replay.Content,
+                    PostId = replay.PostId,
+                    ReplayTime = replay.ReplayTime,
+                    UserId = replay.UserId,
+                    UserImage = u.ProfileImage,
+                    UserName = u.UserName
+                };
+                replayDTOs.Add(r);
+            }
+            return Ok(replayDTOs);
         }
         [HttpPut]
         public IActionResult Edit(int id, ReplayDTO replay)
